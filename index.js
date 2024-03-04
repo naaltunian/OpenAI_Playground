@@ -1,23 +1,25 @@
+import readlineSync from 'readline-sync'
 import "dotenv/config.js";
 import { generateImageFromPrompt } from './service/image.js'
 
 async function main() {
-    generateImageFromPrompt('bass guitar')
-//   const chatCompletion = await openai.chat.completions.create({
-//     messages: [{ role: 'user', content: 'Say this is a test' }],
-//     model: process.env.GPT_MODEL,
-//   });
+    const options = ['Chat', 'Image Generation']
+    const response = readlineSync.keyInSelect(options, 'What would you like to do?')
 
-//   console.log(chatCompletion.choices)
-
-// const response = await openai.images.generate({
-//     model: "dall-e-3",
-//     prompt: "rickenbacker bass guitar",
-//     n: 1,
-//     size: "1024x1024",
-//   });
-
-//   console.log(response)
+    switch (response) {
+        case 0:
+            console.log('Chat coming soon')
+            break
+        case 1:
+            generateImageFromPrompt()
+            break
+        case -1:
+            console.log('exiting...')
+            break
+        default:
+            console.log('invalid response')
+            break
+    }
 }
 
 main();
