@@ -10,18 +10,20 @@ async function generateImageFromPrompt() {
 
     const prompt = readlineSync.question('Provide an image description ')
 
-    const response = await openai.images.generate({
-        model: "dall-e-3",
-        prompt,
-        n: 1,
-        size: "1024x1024",
-    });
-
-    console.log(response) // response.data[0].url
-
-    const url = response.data[0].url
-    const path = `./images/${response.created}.jpg`
-    await downloadImage(url, path)
+    try {
+        const response = await openai.images.generate({
+            model: process.env.IMAGE_MODEL,
+            prompt,
+            n: 1,
+            size: '1024x1024',
+        });
+    
+        const url = response.data[0].url
+        const path = `./images/${response.created}.jpg`
+        await downloadImage(url, path)
+    } catch (error) {
+        console.log('Error creating image:', error)
+    }
 }
 
 async function downloadImage(url, filepath) {
